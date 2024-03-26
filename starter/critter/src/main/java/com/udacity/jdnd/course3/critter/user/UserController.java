@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import com.udacity.jdnd.course3.critter.entities.Customer;
 import com.udacity.jdnd.course3.critter.services.UserService;
 
+import javassist.NotFoundException;
+
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
@@ -38,12 +40,12 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        return this.userService.getCustomerByPetId(petId);
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        return this.userService.saveEmployee(employeeDTO);
     }
 
     @PostMapping("/employee/{employeeId}")

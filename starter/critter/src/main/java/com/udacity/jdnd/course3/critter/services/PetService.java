@@ -41,6 +41,22 @@ public class PetService {
     return convertEntityToDTO(petRepository.save(pet));
   }
 
+  public List<PetDTO> getPetsByOwner(long ownerId) {
+    Customer customer = new Customer();
+    customer.setId(ownerId);
+    List<Pet> pets = this.petRepository.findByCustomer(customer);
+    List<PetDTO> petDTOs = pets
+        .stream()
+        .map(pet -> this.convertEntityToDTO(pet))
+        .collect(Collectors.toList());
+    return petDTOs;
+  }
+
+  public PetDTO getOne(long petId) {
+    Pet pet = petRepository.findById(petId).orElseThrow(() -> new RuntimeException("Pet not found"));
+    return this.convertEntityToDTO(pet);
+  }
+
   private PetDTO convertEntityToDTO(Pet pet) {
     PetDTO petDTO = new PetDTO();
     petDTO.setId(pet.getId());
@@ -60,7 +76,8 @@ public class PetService {
     pet.setBirthDate(petDTO.getBirthDate());
     Long ownerId = petDTO.getOwnerId();
     if (ownerId != null) {
-      Customer customer = this.customerRepository.findById(ownerId).orElseThrow(() -> new RuntimeException("Owner not found"));
+      Customer customer = this.customerRepository.findById(ownerId)
+          .orElseThrow(() -> new RuntimeException("Owner not found"));
       pet.setCustomer(customer);
     }
     return pet;
