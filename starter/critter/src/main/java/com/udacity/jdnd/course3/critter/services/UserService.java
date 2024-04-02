@@ -1,7 +1,10 @@
 package com.udacity.jdnd.course3.critter.services;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import com.udacity.jdnd.course3.critter.repositoties.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repositoties.PetRepository;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
 
 import javassist.NotFoundException;
 
@@ -61,6 +65,29 @@ public class UserService {
   public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
     Employee employee = this.employeeRepository.save(this.convertEmployeeDTOToEntity(employeeDTO));
     return this.convertEmployeeEntityToDTO(employee);
+  }
+
+  public void addEmployeeSchedule(Set<DayOfWeek> daysAvailable, long employeeId) {
+    Employee employee = this.employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new RuntimeException("Employee not found"));
+    employee.setDaysAvailable(daysAvailable);
+    employeeRepository.save(employee);
+  }
+
+  public EmployeeDTO getEmployee(long employeeId) {
+    Employee employee = this.employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new RuntimeException("Employee not found"));
+    return this.convertEmployeeEntityToDTO(employee);
+  }
+
+  public List<EmployeeDTO> findEmployeesForService(EmployeeRequestDTO employeeRequestDTO) {
+    List<Employee> employees = this.employeeRepository.getAllByDaysAvailableContains(
+        employeeRequestDTO.getDate().getDayOfWeek());
+    return (List<EmployeeDTO>) employees
+        .stream()
+        .filter(employee -> employee.getSkills().containsAll(employeeRequestDTO.getSkills()))
+        .map(employee -> this.convertEmployeeEntityToDTO(employee))
+        .collect(Collectors.toList());
   }
 
   /**

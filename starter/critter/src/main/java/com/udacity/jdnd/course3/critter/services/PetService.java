@@ -1,21 +1,15 @@
 package com.udacity.jdnd.course3.critter.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.udacity.jdnd.course3.critter.entities.Customer;
 import com.udacity.jdnd.course3.critter.entities.Pet;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repositoties.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repositoties.PetRepository;
-import com.udacity.jdnd.course3.critter.user.CustomerDTO;
-
-import javassist.tools.web.BadHttpRequest;
 
 @Service
 public class PetService {

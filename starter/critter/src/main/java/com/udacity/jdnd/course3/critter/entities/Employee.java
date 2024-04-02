@@ -31,4 +31,9 @@ public class Employee extends User {
   public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
     this.daysAvailable = daysAvailable;
   }
+
+  public Employee orElseThrow(Object object) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+  }
 }
