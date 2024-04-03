@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ import com.udacity.jdnd.course3.critter.repositoties.PetRepository;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
-
-import javassist.NotFoundException;
 
 @Service
 public class UserService {
@@ -58,8 +55,10 @@ public class UserService {
   }
 
   public CustomerDTO getCustomerByPetId(long petId) {
-    Pet pet = this.petRepository.getOne(petId);
-    return this.convertCustomerEntityToDTO(pet.getCustomer());
+    Pet pet = new Pet();
+    pet.setId(petId);
+    Customer customer = this.customerRepository.findByPetsContains(pet);
+    return this.convertCustomerEntityToDTO(customer);
   }
 
   public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
@@ -75,9 +74,9 @@ public class UserService {
   }
 
   public EmployeeDTO getEmployee(long employeeId) {
-    Employee employee = this.employeeRepository.findById(employeeId)
+    Employee employee = employeeRepository.findById(employeeId)
         .orElseThrow(() -> new RuntimeException("Employee not found"));
-    return this.convertEmployeeEntityToDTO(employee);
+    return convertEmployeeEntityToDTO(employee);
   }
 
   public List<EmployeeDTO> findEmployeesForService(EmployeeRequestDTO employeeRequestDTO) {
@@ -101,10 +100,11 @@ public class UserService {
     customerDTO.setName(customer.getName());
     customerDTO.setPhoneNumber(customer.getPhoneNumber());
     customerDTO.setNotes(customer.getNotes());
-    List<Long> petIds = customer.getPets()
-        .stream()
-        .map(pet -> pet.getId())
-        .collect(Collectors.toList());
+    List<Long> petIds = new ArrayList<>();
+    List<Pet> pets = petRepository.findByCustomer(customer);
+    for (Pet pet : pets) {
+      petIds.add(pet.getId());
+    }
     customerDTO.setPetIds(petIds);
     return customerDTO;
   }

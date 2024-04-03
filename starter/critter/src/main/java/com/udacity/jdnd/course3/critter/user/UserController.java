@@ -11,6 +11,8 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 /**
  * Handles web requests related to Users.
  *
@@ -29,6 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/customer")
+    @Transactional
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
         return this.userService.saveCustomer(customerDTO);
     }
@@ -44,6 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/employee")
+    @Transactional
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return this.userService.saveEmployee(employeeDTO);
     }
@@ -54,6 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/employee/{employeeId}")
+    @Transactional
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
         this.userService.addEmployeeSchedule(daysAvailable, employeeId);
     }

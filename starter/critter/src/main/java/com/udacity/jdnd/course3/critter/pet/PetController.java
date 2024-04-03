@@ -6,6 +6,8 @@ import com.udacity.jdnd.course3.critter.services.PetService;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 /**
  * Handles web requests related to Pets.
  */
@@ -19,13 +21,14 @@ public class PetController {
     }
 
     @PostMapping
+    @Transactional
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         return this.petService.save(petDTO);
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        return this.petService.getOne(petId);
     }
 
     @GetMapping

@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -12,7 +13,7 @@ import org.hibernate.annotations.Nationalized;
 public class Customer extends User {
   private String phoneNumber;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer", cascade = CascadeType.ALL)
   private List<Pet> pets;
 
   @Nationalized

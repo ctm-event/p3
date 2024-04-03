@@ -2,6 +2,8 @@ package com.udacity.jdnd.course3.critter.schedule;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.checkerframework.checker.units.qual.s;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ public class ScheduleController {
     }
 
     @PostMapping
+    @Transactional
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         return this.scheduleService.save(scheduleDTO);
     }
@@ -36,16 +39,16 @@ public class ScheduleController {
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        return this.scheduleService.getSchedulesByPetId(petId);
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        return this.scheduleService.getSchedulesByEmployeeId(employeeId);
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
+        return this.scheduleService.getSchedulesByCustomerId(customerId);
     }
 }
