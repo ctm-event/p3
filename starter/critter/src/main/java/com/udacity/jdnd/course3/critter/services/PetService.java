@@ -3,6 +3,8 @@ package com.udacity.jdnd.course3.critter.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.udacity.jdnd.course3.critter.entities.Customer;
@@ -12,6 +14,7 @@ import com.udacity.jdnd.course3.critter.repositoties.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repositoties.PetRepository;
 
 @Service
+@Transactional
 public class PetService {
   private final PetRepository petRepository;
   private final CustomerRepository customerRepository;

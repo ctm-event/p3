@@ -1,9 +1,10 @@
 package com.udacity.jdnd.course3.critter.services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -12,14 +13,13 @@ import com.udacity.jdnd.course3.critter.entities.Customer;
 import com.udacity.jdnd.course3.critter.entities.Employee;
 import com.udacity.jdnd.course3.critter.entities.Pet;
 import com.udacity.jdnd.course3.critter.entities.Schedule;
-import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repositoties.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repositoties.PetRepository;
 import com.udacity.jdnd.course3.critter.repositoties.ScheduleRepository;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
-import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 
 @Service
+@Transactional
 public class ScheduleService {
   private final ScheduleRepository scheduleRepository;
   private final PetRepository petRepository;
